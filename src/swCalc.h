@@ -2,6 +2,7 @@
 #define _SWCALC_H_
 
 #include <stdint.h>
+#include <string.h>
 #include "swCost.h"
 
 /* defines the SW matrix datatypes */
