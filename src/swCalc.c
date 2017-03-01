@@ -14,6 +14,7 @@ struct matrix *swInitMat(char* s1, char *s2){
         }
     } 
     return m;
+  return NULL;
 }
 
 void swFreeMat(struct matrix *mat){
@@ -29,13 +30,13 @@ void swFreeMat(struct matrix *mat){
 }
 
 void swPrintMat(struct matrix *mat) {
-  /*printf("\n");
-for (unsigned int i=0; i<mat->w; i++){
-  for (unsigned int j=0; j<mat->h; j++) {
-    printf("%d",mat->cells[mat->w*i+j].score);
-  } 
   printf("\n");
-  }*/
+  for (unsigned int i=0; i<mat->w; i++){
+    for (unsigned int j=0; j<mat->h; j++) {
+      printf("%f",mat->cells[mat->w*i+j].score);
+    } 
+    printf("\n");
+  }
 }
 
 void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
