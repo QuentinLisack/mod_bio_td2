@@ -10,3 +10,9 @@ for (unsigned int i=0; i<mat->w; i++){
   printf("\n");
   }*/
 }
+
+
+void swFreeMat(struct matrix *mat) {
+
+}
+
