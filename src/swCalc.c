@@ -37,6 +37,7 @@ void swPrintMat(struct matrix *mat) {
     } 
     printf("\n");
   }
+  printf("\n");
 }
 
 void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
