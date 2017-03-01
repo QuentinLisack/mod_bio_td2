@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <string.h>
 #include "swCost.h"
+#include <stdio.h>
 
 /* defines the SW matrix datatypes */
 
@@ -46,5 +47,7 @@ void swFreeMat(struct matrix *mat);
 
 /* print contents of matrix, for debugging */
 void swPrintMat(struct matrix *mat);
+
+
 
 #endif
