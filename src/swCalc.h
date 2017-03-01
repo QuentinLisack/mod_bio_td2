@@ -5,6 +5,7 @@
 #include <string.h>
 #include "swCost.h"
 #include <stdio.h>
+#include "mem.h"
 
 /* defines the SW matrix datatypes */
 

@@ -1,1 +1,1 @@
-swDnaLinear.o: swDnaLinear.c swCost.h swCalc.h swGetSeq.h swOut.h
+swDnaLinear.o: swDnaLinear.c swCost.h swCalc.h mem.h swGetSeq.h swOut.h
