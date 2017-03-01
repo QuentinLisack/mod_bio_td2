@@ -46,4 +46,6 @@ void swFreeMat(struct matrix *mat);
 /* print contents of matrix, for debugging */
 void swPrintMat(struct matrix *mat);
 
+
+
 #endif

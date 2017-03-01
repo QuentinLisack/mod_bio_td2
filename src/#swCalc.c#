@@ -1,6 +1,6 @@
 #include "swCalc.h"
 #include <stdio.h>
-
+/*
 void swPrintMat(struct matrix *mat) {
   /*printf("\n");
 for (unsigned int i=0; i<mat->w; i++){
@@ -8,5 +8,6 @@ for (unsigned int i=0; i<mat->w; i++){
     printf("%d",mat->cells[mat->w*i+j].score);
   } 
   printf("\n");
-  }*/
+  }
 }
+*/
