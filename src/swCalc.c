@@ -34,12 +34,39 @@ void swPrintMat(struct matrix *mat) {
   printf("\n");
   for (unsigned int i=0; i<mat->w; i++){
     for (unsigned int j=0; j<mat->h; j++) {
-      printf("%f",mat->cells[mat->w*i+j].score);
+      printf("%f  ",mat->cells[mat->w*i+j].score);
     } 
     printf("\n");
   }
 }
 
 void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
-
+    for(unsigned int i = 1; i < mat->h; i++){
+        for(unsigned int j = 1; j< mat->w; j++){
+            int tempScore = mat->cells[mat->w*(i-1)+j].score + cost->indelOpen;
+            mat->cells[mat->w*i+j].score = tempScore;
+            mat->cells[mat->w*i+j].prevs |= 4;
+            tempScore = mat->cells[mat->w*i+(j-1)].score + cost->indelOpen;
+            if(tempScore > mat->cells[mat->w*i+j].score){
+                mat->cells[mat->w*i+j].score = tempScore;
+                mat->cells[mat->w*i+j].prevs |= 2;
+                mat->cells[mat->w*i+j].prevs &= ~4;
+            }else if(tempScore = mat->cells[mat->w*i+j].score){
+                mat->cells[mat->w*i+j].prevs |= 2;
+            }
+            tempScore = mat->cells[mat->w*(i-1)+(j-1)].score + cost->subst(s1[i], s2[j]);
+            if(tempScore > mat->cells[mat->w*i+j].score){
+                mat->cells[mat->w*i+j].score = tempScore;
+                mat->cells[mat->w*i+j].prevs |= 1;
+                mat->cells[mat->w*i+j].prevs &= ~2;
+                mat->cells[mat->w*i+j].prevs &= ~4;
+            }else if(tempScore = mat->cells[mat->w*i+j].score){
+                mat->cells[mat->w*i+j].prevs |= 1;
+            }
+            if(mat->cells[mat->w*i+j].score < 0){
+                mat->cells[mat->w*i+j].score = 0;
+                mat->cells[mat->w*i+j].prevs = 0;
+            }
+        }
+    }
 }
