@@ -17,15 +17,15 @@ struct matrix *swInitMat(char* s1, char *s2){
 }
 
 void swFreeMat(struct matrix *mat){
-    /*if(mat != NULL){
+    if(mat != NULL){
         if(mat->cells != NULL){
-            for(int i = 0; i < m->h; i++){
-                for(int j = 0; j< m->h; j++){
-                    cells[m->w*i + j] 
+            for(int i = 0; i < mat->h; i++){
+                for(int j = 0; j< mat->h; j++){
+                    free(&(mat->cells[mat->w*i + j]));
                 }
             } 
         }
-    }*/
+    }
 }
 
 void swPrintMat(struct matrix *mat) {
