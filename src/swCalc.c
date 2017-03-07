@@ -4,8 +4,8 @@
 struct matrix *swInitMat(char* s1, char *s2){
     struct matrix *m;
     m = mallocOrDie(sizeof(struct matrix), "alloc matrice");
-    m->h = strlen(s1);
-    m->w = strlen(s2);
+    m->h = strlen(s1)+1;
+    m->w = strlen(s2)+1;
     m->cells = mallocOrDie(m->w * m->h * sizeof(struct cell), "alloc cellules");
     for(unsigned int i = 0; i < m->h; i++){
         for(unsigned int j = 0; j< m->w; j++){
@@ -51,7 +51,7 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
             }else if(tempScore = mat->cells[mat->w*i+j].score){
                 mat->cells[mat->w*i+j].prevs |= 2;
             }
-            tempScore = mat->cells[mat->w*(i-1)+(j-1)].score + cost->subst(s1[i], s2[j]);
+            tempScore = mat->cells[mat->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
             if(tempScore > mat->cells[mat->w*i+j].score){
                 mat->cells[mat->w*i+j].score = tempScore;
                 mat->cells[mat->w*i+j].prevs |= 1;

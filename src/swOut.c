@@ -29,33 +29,72 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   s2_align = malloc(strlen(s2));
   cell=mat->cells[mat->w*i_BS+j_BS];
   prev=cell.prevs;
-
+  int *s1_align_int = NULL;
+  int *s2_align_int = NULL;
+  s1_align_int = malloc(strlen(s1)*sizeof(int));
+  s2_align_int = malloc(strlen(s2)*sizeof(int));
+  
+  //initialisation des chaines. 0 signifie que le caractère n'es pas considéré dans la chaine : on n'affichera rien. 
+  // 1 signifie qu'il fait partie de la chaine : on affichera le caractère
+  // -1 signifie qu'il a été supprimé lors d'une indel : on affichera -
+  for(int p = 0; p < strlen(s1); p++){
+  	s1_align_int[p] = 0;
+  }
+  
+  for(int p = 0; p < strlen(s2); p++){
+  	s2_align_int[p] = 0;
+  }
+  
   while(cell.score!=0) { // pas du tout sûr!!
     //i_BS=mat-
-    if (cell.prevs==1) {
+    if (prev&1) {
       i_BS-=1; 
       j_BS-=1;
+      s1_align_int[i_BS] = 1;
+      s2_align_int[j_BS] = 1;
+      printf("diag\n");
     }
-    else if (cell.prevs==-1) { // là on doit remplir la chaine
-      i_BS-=1; 
+    else if (prev&2) { // là on doit remplir la chaine
       j_BS-=1;
+      s2_align_int[j_BS] = -1;
+      printf("top\n");
     }
-      else if (cell.prevs==-2){
-	i_BS-=1; //cmt on sait ?
+      else if (prev&4){
+		i_BS-=1; //cmt on sait ?
+		s1_align_int[i_BS] = -1;
+		printf("left\n");
     }
     cell=mat->cells[mat->w*i_BS+j_BS];
     prev=cell.prevs;
   }
 
 
-  int s1_start=1; // à modifier quand le code sera bon
-  int s2_start=2;
+  int s1_start=i_BS; // à modifier quand le code sera bon
+  int s2_start=j_BS;
 
   /* affichage des résulatats */
   printf("Best score is %.1f, the best-scoring alignments are:\n\n ",BestScore);
   printf("s1 alignment starts at coord %d\n s2 alignment starts at coord %d\n\n",s1_start,s2_start);
+  printf("les sequences alignees sont : \n");
+  for(int p = 0; p < strlen(s1); p++){
+  	if(s1_align_int[p] == 1){
+  	  printf("%c", s1[p]);
+  	}
+  	if(s1_align_int[p] == -1){
+  	  printf("-");
+  	}
+  }
+  printf("\n");
+  for(int p = 0; p < strlen(s2); p++){
+  	if(s2_align_int[p] == 1){
+  	  printf("%c", s2[p]);
+  	}
+  	if(s2_align_int[p] == -1){
+  	  printf("-");
+  	}
+  }
+  printf("\n");
+  printf("les sequences initiales sont : \n");
   printf("s1	%s\n",s1);
   printf("s2	%s\n",s2);
-
-
 }
