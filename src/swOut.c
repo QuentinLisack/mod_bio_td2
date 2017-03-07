@@ -10,8 +10,8 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   uint8_t prev;
   struct cell cell;
   /* on recherche le score maximal */
-  for (unsigned int i=0; i<mat->w; i++){
-    for (unsigned int j=0; j<mat->h; j++) {
+  for (unsigned int i=0; i<mat->h; i++){
+    for (unsigned int j=0; j<mat->w; j++) {
       sc=mat->cells[mat->w*i+j].score;
       if (sc>BestScore) {
 	BestScore=sc;
