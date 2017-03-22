@@ -9,24 +9,12 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   unsigned int* j_BS = mallocOrDie(sizeof(unsigned int), "j_BS");
 
   Calcul_BestScore(mat, BestScore, i_BS, j_BS);
-
-  int LENGTH = strlen(s1) < strlen(s2) ? strlen(s2) : strlen(s1);
-  char* s1_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s1 print");
-  char* s2_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s2 print");
   
-  getCorrespondingSeq(mat, &s1_print, &s2_print, i_BS, j_BS, s1, s2);
-
-  int s1_start=(*i_BS); // à modifier quand le code sera bon
-  int s2_start=(*j_BS);
-
-  /* affichage des résultats */
-  printResults(s1, s2, s1_print, s2_print, (*BestScore), s1_start, s2_start);
+  printCorrespondingSeq(mat, i_BS, j_BS, s1, s2, BestScore);
 
   free(BestScore);
   free(i_BS);
   free(j_BS);
-  free(s1_print);
-  free(s2_print);
 }
 
 
@@ -113,7 +101,7 @@ void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigne
   }
 }*/
 
-void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, unsigned int* i_BS, unsigned int* j_BS, char* s1, char* s2){
+void printCorrespondingSeq(struct matrix *mat, unsigned int* i_BS, unsigned int* j_BS, char* s1, char* s2, int* BestScore){
   int *s1_align_int = mallocOrDie(strlen(s1)*sizeof(int), "alloc error for s1 align");
   int *s2_align_int = mallocOrDie(strlen(s2)*sizeof(int), "alloc error for s2 align");
   uint8_t* prev = mallocOrDie(sizeof(uint8_t), "prev");
@@ -155,6 +143,8 @@ void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, u
 
   //on remplit les séquences à afficher avec une bonne gestion des indel
   int LENGTH = strlen(s1) < strlen(s2) ? strlen(s2) : strlen(s1);
+  char* s1_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s1 print");
+  char* s2_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s2 print");
 
   for(int i = 0; i < strlen(s1); i++){
     printf("%d  ", s1_align_int[i]);
@@ -166,22 +156,26 @@ void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, u
   printf("\n");
 
   int p1 = 0, p2 = 0;
+  int reslength = 0;
   int seqBegin = 0;
   for(int p = 0; p < LENGTH; p++){
     if(s1_align_int[p1] == -1){
       seqBegin = 1;
-      (*s1_print)[p] = s1[p1];
-      (*s2_print)[p] = '-';
+      s1_print[reslength] = s1[p1];
+      s2_print[reslength] = '-';
+      reslength++;
       p1++;
     }else if(s2_align_int[p2] == -1){
       seqBegin = 1;
-      (*s1_print)[p] = '-';
-      (*s2_print)[p] = s2[p2];
+      s1_print[reslength] = '-';
+      s2_print[reslength] = s2[p2];
+      reslength++;
       p2++;
     }else if(s1_align_int[p1] == 1 && s2_align_int[p2] == 1){
       seqBegin = 1;
-      (*s1_print)[p] = s1[p1];
-      (*s2_print)[p] = s2[p2];
+      s1_print[reslength] = s1[p1];
+      s2_print[reslength] = s2[p2];
+      reslength++;
       p1++;
       p2++;
     }else if(s1_align_int[p1] == 0 && s2_align_int[p2] == 0){
@@ -201,10 +195,17 @@ void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, u
     }
   }
   
-  printf("s1 = %s\n", (*s1_print));
-  printf("s2 = %s\n", (*s2_print));
+  printf("s1_print %s\n", s1_print);
+  
+  int s1_start=(*i_BS); // à modifier quand le code sera bon
+  int s2_start=(*j_BS);
+
+  /* affichage des résultats */
+  printResults(s1, s2, s1_print, s2_print, (*BestScore), s1_start, s2_start);
   
   free(s1_align_int);
   free(s2_align_int);
   free(prev);
+  free(s1_print);
+  free(s2_print);
 }

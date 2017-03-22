@@ -1,8 +1,8 @@
 #include "swCalc.h"
 
 
-void swInitMat(char* s1, char *s2, struct matrix *m){
-    m = mallocOrDie(sizeof(struct matrix), "alloc matrice");
+struct matrix* swInitMat(char* s1, char *s2){
+    struct matrix* m = mallocOrDie(sizeof(struct matrix), "alloc matrice");
     m->h = strlen(s1)+1;
     m->w = strlen(s2)+1;
     m->cells = mallocOrDie(m->w * m->h * sizeof(struct cell), "alloc cellules");
@@ -12,6 +12,7 @@ void swInitMat(char* s1, char *s2, struct matrix *m){
             m->cells[m->w*i + j].prevs = 0;
         }
     } 
+    return m;
 }
 
 void swFreeMat(struct matrix *mat){
