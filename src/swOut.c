@@ -93,4 +93,6 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   printf("les sequences initiales sont : \n");
   printf("s1	%s\n",s1);
   printf("s2	%s\n",s2);
+  free(s1_align_int);
+  free(s2_align_int);
 }
