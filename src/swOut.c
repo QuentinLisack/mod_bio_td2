@@ -29,6 +29,35 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   free(s2_print);
 }
 
+
+/*void printBestAlisAff(struct matrix *D, struct matrix *V, struct matrix *H, struct cost *cost, char *s1, char *s2) {
+  double* BestScore = mallocOrDie(sizeof(double), "best score");
+  *BestScore = 0;
+  unsigned int* i_BS = mallocOrDie(sizeof(unsigned int), "i_BS");
+  unsigned int* j_BS = mallocOrDie(sizeof(unsigned int), "j_BS");
+
+  Calcul_BestScoreAff(D, V, H, BestScore, i_BS, j_BS);
+
+  int LENGTH = strlen(s1) < strlen(s2) ? strlen(s2) : strlen(s1);
+  char* s1_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s1 print");
+  char* s2_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s2 print");
+  
+  getCorrespondingSeqAff(D, V, H, &s1_print, &s2_print, i_BS, j_BS, s1, s2);
+
+  int s1_start=(*i_BS); // à modifier quand le code sera bon
+  int s2_start=(*j_BS);
+
+  /* affichage des résultats */
+/* printResults(s1, s2, s1_print, s2_print, (*BestScore), s1_start, s2_start);
+
+  free(BestScore);
+  free(i_BS);
+  free(j_BS);
+  free(s1_print);
+  free(s2_print);
+}*/
+
+
 void printResults(char* s1, char* s2, char* s1_print, char* s2_print, int bestScore, int s1_start, int s2_start){
   printf("Best score is %.1f, the best-scoring alignments are:\n\n ", bestScore);
   printf("s1 alignment starts at coord %d\n s2 alignment starts at coord %d\n\n",s1_start,s2_start);
@@ -56,6 +85,33 @@ void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigne
     }
   }
 }
+
+/*void Calcul_BestScoreAff(struct matrix *D, struct matrix *V, struct matrix *H, double* BS, unsigned int* iBS, unsigned int* jBS) {
+  int sc;
+  /* on recherche le score maximal */
+/* for (unsigned int i=0; i<D->h; i++){
+    for (unsigned int j=0; j<D->w; j++) {
+      sc=D->cells[D->w*i+j].score;
+      if (sc >= (*BS)) {
+	(*BS)=sc;
+	(*iBS)=i;
+	(*jBS)=j;
+      }
+      sc=V->cells[V->w*i+j].score;
+      if (sc >= (*BS)) {
+	(*BS)=sc;
+	(*iBS)=i;
+	(*jBS)=j;
+      } 
+      sc=H->cells[H->w*i+j].score;
+      if (sc >= (*BS)) {
+	(*BS)=sc;
+	(*iBS)=i;
+	(*jBS)=j;
+      } 
+    }
+  }
+}*/
 
 void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, unsigned int* i_BS, unsigned int* j_BS, char* s1, char* s2){
   int *s1_align_int = mallocOrDie(strlen(s1)*sizeof(int), "alloc error for s1 align");

@@ -31,7 +31,7 @@ struct matrix {
 
 /* allocate and initialize (first row and col) a matrix for SW 
    alignment of strings s1 and s2 */
-struct matrix *swInitMat(char *s1, char *s2);
+void swInitMat(char *s1, char *s2, struct matrix *m);
 
 /* Fill the mat matrix, using Smith-Waterman with a linear indel model 
    using cost->indelOpen, or Gotoh with an affine indel model using 
@@ -42,12 +42,16 @@ struct matrix *swInitMat(char *s1, char *s2);
 */
 void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2) ;
 
+void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct cost *cost, char *s1, char *s2) ;
+
 
 /* free all allocated memory in mat */
 void swFreeMat(struct matrix *mat);
 
 /* print contents of matrix, for debugging */
 void swPrintMat(struct matrix *mat);
+
+int max(int a, int b, int c, int* dir);
 
 
 
