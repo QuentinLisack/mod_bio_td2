@@ -23,25 +23,21 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   
   /* on alloue les 2 chaines : pour les remplir, on les remplit de la fin (\0) vers le début sinon faudrait les inverser à la fin vu qu'on effectue le parcours depuis la fin de la séquence choisie) en choisissant le meilleur chemin calculé précédemment dans prevs*/
   // mat->cells[i].prevs
-  char *s1_align = NULL;
-  char *s2_align = NULL;
-  s1_align = malloc(strlen(s1));
-  s2_align = malloc(strlen(s2));
   cell=mat->cells[mat->w*i_BS+j_BS];
   prev=cell.prevs;
   int *s1_align_int = NULL;
   int *s2_align_int = NULL;
-  s1_align_int = malloc(strlen(s1)*sizeof(int));
-  s2_align_int = malloc(strlen(s2)*sizeof(int));
+  s1_align_int = mallocOrDie(strlen(s1)*sizeof(int), "Out 1");
+  s2_align_int = mallocOrDie(strlen(s2)*sizeof(int), "Out 2");
   
   //initialisation des chaines. 0 signifie que le caractère n'es pas considéré dans la chaine : on n'affichera rien. 
   // 1 signifie qu'il fait partie de la chaine : on affichera le caractère
   // -1 signifie qu'il a été supprimé lors d'une indel : on affichera -
-  for(int p = 0; p < strlen(s1); p++){
+  for(unsigned int p = 0; p < strlen(s1); p++){
   	s1_align_int[p] = 0;
   }
   
-  for(int p = 0; p < strlen(s2); p++){
+  for(unsigned int p = 0; p < strlen(s2); p++){
   	s2_align_int[p] = 0;
   }
   
@@ -76,7 +72,7 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   printf("Best score is %.1f, the best-scoring alignments are:\n\n ",BestScore);
   printf("s1 alignment starts at coord %d\n s2 alignment starts at coord %d\n\n",s1_start,s2_start);
   printf("les sequences alignees sont : \n");
-  for(int p = 0; p < strlen(s1); p++){
+  for(unsigned int p = 0; p < strlen(s1); p++){
   	if(s1_align_int[p] == 1){
   	  printf("%c", s1[p]);
   	}
@@ -85,7 +81,7 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   	}
   }
   printf("\n");
-  for(int p = 0; p < strlen(s2); p++){
+  for(unsigned int p = 0; p < strlen(s2); p++){
   	if(s2_align_int[p] == 1){
   	  printf("%c", s2[p]);
   	}
