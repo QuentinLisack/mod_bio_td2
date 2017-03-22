@@ -3,28 +3,23 @@
 //regarder comment avoir accès aux données avec gdb
 // il reste essentiellement à remplir les chaines dans les if et à vérifier les conditions dans les if et while
 void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
-  double BestScore=0;
-  unsigned int i_BS;
-  unsigned int j_BS;
-  int sc;
-  uint8_t prev;
+  double* BestScore = mallocOrDie(sizeof(double), "best score");
+  *BestScore = 0;
+  unsigned int* i_BS = mallocOrDie(sizeof(unsigned int), "i_BS");
+  unsigned int* j_BS = mallocOrDie(sizeof(unsigned int), "j_BS");
+  uint8_t* prev = mallocOrDie(sizeof(uint8_t), "prev");
   struct cell cell;
-  /* on recherche le score maximal */
-  for (unsigned int i=0; i<mat->h; i++){
-    for (unsigned int j=0; j<mat->w; j++) {
-      sc=mat->cells[mat->w*i+j].score;
-      if (sc>BestScore) {
-	BestScore=sc;
-	i_BS=i;
-	j_BS=j;
-      } 
-    }
-  }
+
+  Calcul_BestScore(mat, BestScore, i_BS, j_BS);
   
-  /* on alloue les 2 chaines : pour les remplir, on les remplit de la fin (\0) vers le début sinon faudrait les inverser à la fin vu qu'on effectue le parcours depuis la fin de la séquence choisie) en choisissant le meilleur chemin calculé précédemment dans prevs*/
+  
+  /* on alloue les 2 chaines : pour les remplir, 
+  on les remplit de la fin (\0) vers le début sinon faudrait les inverser à la 
+  fin vu qu'on effectue le parcours depuis la fin de la séquence choisie) 
+  en choisissant le meilleur chemin calculé précédemment dans prevs*/
   // mat->cells[i].prevs
-  cell=mat->cells[mat->w*i_BS+j_BS];
-  prev=cell.prevs;
+  cell=mat->cells[mat->w*(*i_BS)+(*j_BS)];
+  (*prev)=cell.prevs;
   int *s1_align_int = NULL;
   int *s2_align_int = NULL;
   s1_align_int = mallocOrDie(strlen(s1)*sizeof(int), "Out 1");
@@ -43,33 +38,33 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   
   while(cell.score!=0) { // pas du tout sûr!!
     //i_BS=mat-
-    if (prev&1) {
-      i_BS-=1; 
-      j_BS-=1;
-      s1_align_int[i_BS] = 1;
-      s2_align_int[j_BS] = 1;
+    if ((*prev)&1) {
+      (*i_BS)-=1; 
+      (*j_BS)-=1;
+      s1_align_int[(*i_BS)] = 1;
+      s2_align_int[(*j_BS)] = 1;
       printf("diag\n");
     }
-    else if (prev&2) { // là on doit remplir la chaine
-      j_BS-=1;
-      s2_align_int[j_BS] = -1;
+    else if ((*prev)&2) { // là on doit remplir la chaine
+      (*j_BS)-=1;
+      s2_align_int[(*j_BS)] = -1;
       printf("top\n");
     }
-      else if (prev&4){
-		i_BS-=1; //cmt on sait ?
-		s1_align_int[i_BS] = -1;
+      else if ((*prev)&4){
+		(*i_BS)-=1; //cmt on sait ?
+		s1_align_int[(*i_BS)] = -1;
 		printf("left\n");
     }
-    cell=mat->cells[mat->w*i_BS+j_BS];
-    prev=cell.prevs;
+    cell=mat->cells[mat->w*(*i_BS)+(*j_BS)];
+    (*prev)=cell.prevs;
   }
 
 
-  int s1_start=i_BS; // à modifier quand le code sera bon
-  int s2_start=j_BS;
+  int s1_start=(*i_BS); // à modifier quand le code sera bon
+  int s2_start=(*j_BS);
 
   /* affichage des résulatats */
-  printf("Best score is %.1f, the best-scoring alignments are:\n\n ",BestScore);
+  printf("Best score is %.1f, the best-scoring alignments are:\n\n ",(*BestScore));
   printf("s1 alignment starts at coord %d\n s2 alignment starts at coord %d\n\n",s1_start,s2_start);
   printf("les sequences alignees sont : \n");
   for(unsigned int p = 0; p < strlen(s1); p++){
@@ -95,4 +90,19 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   printf("s2	%s\n",s2);
   free(s1_align_int);
   free(s2_align_int);
+}
+
+void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS) {
+  int sc;
+  /* on recherche le score maximal */
+  for (unsigned int i=0; i<mat->h; i++){
+    for (unsigned int j=0; j<mat->w; j++) {
+      sc=mat->cells[mat->w*i+j].score;
+      if (sc >= (*BS)) {
+  (*BS)=sc;
+  (*iBS)=i;
+  (*jBS)=j;
+      } 
+    }
+  }
 }
