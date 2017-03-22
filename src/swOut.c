@@ -12,7 +12,6 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
 
   Calcul_BestScore(mat, BestScore, i_BS, j_BS);
   
-  
   /* on alloue les 2 chaines : pour les remplir, 
   on les remplit de la fin (\0) vers le début sinon faudrait les inverser à la 
   fin vu qu'on effectue le parcours depuis la fin de la séquence choisie) 
@@ -88,8 +87,13 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   printf("les sequences initiales sont : \n");
   printf("s1	%s\n",s1);
   printf("s2	%s\n",s2);
+
   free(s1_align_int);
   free(s2_align_int);
+  free(BestScore);
+  free(i_BS);
+  free(j_BS);
+  free(prev);
 }
 
 void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS) {
