@@ -20,7 +20,17 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   int s2_start=(*j_BS);
 
   /* affichage des résultats */
-  printf("Best score is %.1f, the best-scoring alignments are:\n\n ",(*BestScore));
+  printResults(s1, s2, s1_print, s2_print, (*BestScore), s1_start, s2_start);
+
+  free(BestScore);
+  free(i_BS);
+  free(j_BS);
+  free(s1_print);
+  free(s2_print);
+}
+
+void printResults(char* s1, char* s2, char* s1_print, char* s2_print, int bestScore, int s1_start, int s2_start){
+  printf("Best score is %.1f, the best-scoring alignments are:\n\n ", bestScore);
   printf("s1 alignment starts at coord %d\n s2 alignment starts at coord %d\n\n",s1_start,s2_start);
   printf("les sequences alignees sont : \n");
   printf("%s\n", s1_print);
@@ -30,12 +40,6 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   printf("les sequences initiales sont : \n");
   printf("s1	%s\n",s1);
   printf("s2	%s\n",s2);
-
-  free(BestScore);
-  free(i_BS);
-  free(j_BS);
-  free(s1_print);
-  free(s2_print);
 }
 
 void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS) {
@@ -100,7 +104,7 @@ void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, u
     printf("%d  ", s1_align_int[i]);
   }
   printf("\n");
-  for(int i = 0; i < strlen(s1); i++){
+  for(int i = 0; i < strlen(s2); i++){
     printf("%d  ", s2_align_int[i]);
   }
   printf("\n");
