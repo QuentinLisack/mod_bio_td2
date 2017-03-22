@@ -145,6 +145,9 @@ void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, u
     }
   }
   
+  printf("s1 = %s\n", (*s1_print));
+  printf("s2 = %s\n", (*s2_print));
+  
   free(s1_align_int);
   free(s2_align_int);
   free(prev);
