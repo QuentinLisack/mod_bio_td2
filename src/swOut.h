@@ -12,5 +12,6 @@
 */
 void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2);
 void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS);
+void getCorrespondingSeq(struct matrix *mat, char** s1_print, char** s2_print, unsigned int* i_BS, unsigned int* j_BS, char* s1, char* s2);
 
 #endif
