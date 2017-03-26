@@ -15,5 +15,6 @@ void printBestAlisAff(struct matrix *D, struct matrix *V, struct matrix *H, stru
 void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS);
 void printCorrespondingSeq(struct matrix *mat, unsigned int* i_BS, unsigned int* j_BS, char* s1, char* s2, int* BestScore);
 void printResults(char* s1, char* s2, char* s1_print, char* s2_print, int bestScore, int s1_start, int s2_start);
+void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix *H, unsigned int* i_BS, unsigned int* j_BS, char* s1, char* s2, int* BestScore);
 
 #endif
