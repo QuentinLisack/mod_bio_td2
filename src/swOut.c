@@ -16,7 +16,7 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
     printCorrespondingSeq(mat, i_BS[p], j_BS[p], s1, s2, BestScore);
   }
   
-  printf("Best score is %.1f\n ", *BestScore);
+  printf("Best score is %f \n ", *BestScore);
   printf("\n");
   printf("les sequences initiales sont : \n");
   printf("s1	%s\n",s1);
@@ -63,7 +63,7 @@ void printResults(char* s1_print, char* s2_print, int s1_start, int s2_start){
 }
 
 void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS, unsigned int *numMax) {
-  int sc;
+  double sc;
   /* on recherche le score maximal */
   for (unsigned int i=0; i<mat->h; i++){
     for (unsigned int j=0; j<mat->w; j++) {

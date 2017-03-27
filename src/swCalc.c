@@ -85,77 +85,79 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 
 void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct cost *cost, char *s1, char *s2){
   int dir=0;
-    for(unsigned int i = 1; i < D->h; i++){
-        for(unsigned int j = 1; j< D->w; j++){
-		  int tempScore;
-		  // quand on vient à la verticale
-		  int tempScoreD = D->cells[D->w*(i-1)+j].score;
-		  int tempScoreV = V->cells[V->w*(i-1)+j].score;
-		  int tempScoreH = H->cells[H->w*(i-1)+j].score;
-		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
-		  if (dir == 0) {
-		  	tempScore += cost->indelOpen;
-		  } else if (dir == 1) {
-		  	tempScore += cost->indelExtend;
-		  } else {
-		  	tempScore += cost->indelOpen;
-		  }
-		  V->cells[V->w*i+j].score = tempScore;
-		  V->cells[V->w*i+j].prevs |= 4;
-		  // horizontale
-		  tempScoreD = D->cells[D->w*i+(j-1)].score;
-		  tempScoreV = V->cells[V->w*i+(j-1)].score;
-		  tempScoreH = H->cells[H->w*i+(j-1)].score;
-		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
-		  if (dir == 0) {
-		  	tempScore += cost->indelOpen;
-		  } else if (dir == 1) {
-		  	tempScore += cost->indelOpen;
-		  } else {
-		  	tempScore += cost->indelExtend;
-		  }
-		  if(tempScore > H->cells[H->w*i+j].score){
-		    H->cells[H->w*i+j].score = tempScore;
-		    H->cells[H->w*i+j].prevs |= 2;
-		    H->cells[H->w*i+j].prevs &= ~4;
-		  } else if(tempScore == H->cells[H->w*i+j].score){
-		    H->cells[H->w*i+j].prevs |= 2;
-		  }
-		  // diagonale
-		  tempScoreD = D->cells[D->w*(i-1)+(j-1)].score;
-		  tempScoreV = V->cells[V->w*(i-1)+(j-1)].score;
-		  tempScoreH = H->cells[H->w*(i-1)+(j-1)].score;
-		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir) + cost->subst(s1[i-1], s2[j-1]);
-	      if(tempScore > D->cells[D->w*i+j].score){
-	        D->cells[D->w*i+j].score = tempScore;
-	        D->cells[D->w*i+j].prevs |= 1;
-	        D->cells[D->w*i+j].prevs &= ~2;
-	        D->cells[D->w*i+j].prevs &= ~4;
-	      } else if(tempScore == D->cells[D->w*i+j].score){
-	        D->cells[D->w*i+j].prevs |= 1;
-	      }
+  for(unsigned int i = 1; i < D->h; i++){
+    for(unsigned int j = 1; j< D->w; j++){
+		  double tempScore;
+      double tempScoreD;
+      double tempScoreV;
+      double tempScoreH;
 
-	      if(D->cells[D->w*i+j].score < 0){
-	        D->cells[D->w*i+j].score = 0;
-	        D->cells[D->w*i+j].prevs = 0;
-	       }
+		  // quand on vient à la verticale
+		  tempScoreD = D->cells[D->w*(i-1)+j].score + cost->indelOpen;
+      if (i != 1) {
+		    tempScoreV = V->cells[V->w*(i-1)+j].score + cost->indelExtend;
+		  } else {
+        tempScoreV = V->cells[V->w*(i-1)+j].score + cost->indelOpen;
+      }
+      tempScoreH = H->cells[H->w*(i-1)+j].score + cost->indelOpen;
+		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
+      V->cells[V->w*i+j].score = tempScore;
+		  if (dir == 0) {
+        V->cells[V->w*i+j].prevs |= 1;
+		  } else if (dir == 1) {
+        V->cells[V->w*i+j].prevs |= 4;
+		  } else {
+        V->cells[V->w*i+j].prevs |= 2;
+		  }
+		  
+		  // horizontale
+		  tempScoreD = D->cells[D->w*i+(j-1)].score + cost->indelOpen;
+		  tempScoreV = V->cells[V->w*i+(j-1)].score + cost->indelOpen;
+      if (j != 1) {
+        tempScoreH = H->cells[H->w*i+(j-1)].score + cost->indelExtend;
+      } else {
+        tempScoreH = H->cells[H->w*i+(j-1)].score + cost->indelOpen;
+      }
+		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
+      H->cells[H->w*i+j].score = tempScore;
+		  if (dir == 0) {
+        H->cells[V->w*i+j].prevs |= 1;
+      } else if (dir == 1) {
+        H->cells[V->w*i+j].prevs |= 4;
+      } else {
+        H->cells[V->w*i+j].prevs |= 2;
+      }
+
+		  // diagonale
+		  tempScoreD = D->cells[D->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
+		  tempScoreV = V->cells[V->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
+		  tempScoreH = H->cells[H->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
+		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
+      D->cells[D->w*i+j].score = tempScore;
+      if (dir == 0) {
+        D->cells[V->w*i+j].prevs |= 1;
+      } else if (dir == 1) {
+        D->cells[V->w*i+j].prevs |= 4;
+      } else {
+        D->cells[V->w*i+j].prevs |= 2;
 	    }
-	    }
+    }
+  }
 }
 
-int max(int a, int b, int c, int dir) {
-  int maxi = a;
+double max(double d, double v, double h, int dir) {
+  double maxi = d;
   dir = 0;
-  if (b > maxi) {
-    maxi = b;
+  if (v > maxi) {
+    maxi = v;
     dir = 1;
   }
-  if (c > maxi) {
-    maxi = c;
+  if (h > maxi) {
+    maxi = h;
     dir = 2;
   }
   if (maxi < 0) {
-  	maxi = 0;
+    maxi = 0;
   }
   return maxi;
 }
