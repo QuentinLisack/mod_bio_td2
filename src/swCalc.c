@@ -82,7 +82,7 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 }
 
 void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct cost *cost, char *s1, char *s2){
-  int* dir = mallocOrDie(sizeof(int), "dir");
+  int dir=0;
     for(unsigned int i = 1; i < D->h; i++){
         for(unsigned int j = 1; j< D->w; j++){
 		  int tempScore;
@@ -91,9 +91,9 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
 		  int tempScoreV = V->cells[V->w*(i-1)+j].score;
 		  int tempScoreH = H->cells[H->w*(i-1)+j].score;
 		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
-		  if (*dir == 0) {
+		  if (dir == 0) {
 		  	tempScore += cost->indelOpen;
-		  } else if (*dir == 1) {
+		  } else if (dir == 1) {
 		  	tempScore += cost->indelExtend;
 		  } else {
 		  	tempScore += cost->indelOpen;
@@ -105,9 +105,9 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
 		  tempScoreV = V->cells[V->w*i+(j-1)].score;
 		  tempScoreH = H->cells[H->w*i+(j-1)].score;
 		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
-		  if (*dir == 0) {
+		  if (dir == 0) {
 		  	tempScore += cost->indelOpen;
-		  } else if (*dir == 1) {
+		  } else if (dir == 1) {
 		  	tempScore += cost->indelOpen;
 		  } else {
 		  	tempScore += cost->indelExtend;
@@ -138,20 +138,19 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
 	        D->cells[D->w*i+j].prevs = 0;
 	       }
 	    }
-	    free(dir);
-	}
+	    }
 }
 
-int max(int a, int b, int c, int* dir) {
+int max(int a, int b, int c, int dir) {
   int maxi = a;
-  *dir = 0;
+  dir = 0;
   if (b > maxi) {
     maxi = b;
-    *dir = 1;
+    dir = 1;
   }
   if (c > maxi) {
     maxi = c;
-    *dir = 2;
+    dir = 2;
   }
   if (maxi < 0) {
   	maxi = 0;
