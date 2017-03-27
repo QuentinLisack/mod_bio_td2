@@ -95,7 +95,7 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 }
 
 void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct cost *cost, char *s1, char *s2){
-  int dir=0;
+  int dir = 0;
   for(unsigned int i = 1; i < D->h; i++){
     for(unsigned int j = 1; j< D->w; j++){
 		  double tempScore;
@@ -111,7 +111,7 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
         tempScoreV = V->cells[V->w*(i-1)+j].score + cost->indelOpen;
       }
       tempScoreH = H->cells[H->w*(i-1)+j].score + cost->indelOpen;
-		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
+		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, &dir);
       V->cells[V->w*i+j].score = tempScore;
 		  if (dir == 0) {
         V->cells[V->w*i+j].prevs |= 1;
@@ -129,7 +129,7 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
       } else {
         tempScoreH = H->cells[H->w*i+(j-1)].score + cost->indelOpen;
       }
-		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
+		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, &dir);
       H->cells[H->w*i+j].score = tempScore;
 		  if (dir == 0) {
         H->cells[V->w*i+j].prevs |= 1;
@@ -143,7 +143,7 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
 		  tempScoreD = D->cells[D->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
 		  tempScoreV = V->cells[V->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
 		  tempScoreH = H->cells[H->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
-		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, dir);
+		  tempScore = max(tempScoreD, tempScoreV, tempScoreH, &dir);
       D->cells[D->w*i+j].score = tempScore;
       if (dir == 0) {
         D->cells[V->w*i+j].prevs |= 1;
@@ -156,16 +156,16 @@ void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct c
   }
 }
 
-double max(double d, double v, double h, int dir) {
+double max(double d, double v, double h, int* dir) {
   double maxi = d;
-  dir = 0;
+  *dir = 0;
   if (v > maxi) {
     maxi = v;
-    dir = 1;
+    *dir = 1;
   }
   if (h > maxi) {
     maxi = h;
-    dir = 2;
+    *dir = 2;
   }
   if (maxi < 0) {
     maxi = 0;
