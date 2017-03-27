@@ -66,6 +66,7 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
                 mat->cells[mat->w*i+j].prevs = 0;
             }
             //print de debug
+            /*
             printf("ligne : %d ; colonne : %d\n", j, i);
             printf("score : %f\n", mat->cells[mat->w*i+j].score);
             if(mat->cells[mat->w*i+j].prevs & 1){
@@ -77,6 +78,7 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
             if(mat->cells[mat->w*i+j].prevs & 4){
             	printf("top avec les char %c %c\n", s1[i-1], s2[j-1]);
             }
+            */
         }
     }
 }

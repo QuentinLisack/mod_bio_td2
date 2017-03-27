@@ -23,8 +23,20 @@ int main(void)
 	struct matrix *V = swInitMat(s1,s2);
 	struct matrix *H = swInitMat(s1,s2);
 	swFillMatAff(D, V, H, cost, s1, s2);
-	/* for debugging you can uncomment:
-	   swPrintMat(mat); */
+
+    /* uncomment for debug
+    printf("\n");
+    printf("matrice D : \n");
+	swPrintMat(D);
+	printf("\n");
+	printf("matrice V : \n");
+	swPrintMat(V);
+	printf("\n");
+	printf("matrice H : \n");
+	swPrintMat(H);
+	printf("\n");
+	*/
+	
 	printBestAlisAff(D, V, H, cost, s1, s2);
 
 	swFreeMat(D);
