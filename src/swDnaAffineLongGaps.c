@@ -18,7 +18,7 @@ int main(void)
 	printf("Sequences read:\ns1\t%s\ns2\t%s\n\n", s1, s2) ;
 
 	/* affine cost for long gaps eg spliced RNA on genome */
-	struct cost *cost = costDna(-20,-0.05);
+	struct cost *cost = costDna(-100,-0.05);
 	struct matrix *D = swInitMat(s1,s2);
 	struct matrix *V = swInitMat(s1,s2);
 	struct matrix *H = swInitMat(s1,s2);

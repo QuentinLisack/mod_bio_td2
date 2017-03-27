@@ -114,26 +114,24 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
       s2_align_int[j_BS] = 1;
       //printf("diag\n");
     }
-    else if (prev & 4) {
+    else if (prev & 2) {
       j_BS-=1;
       s2_align_int[j_BS] = -1;
       //printf("top\n");
     }
-      else if (prev & 2){
+    else if (prev & 4){
 		i_BS-=1;
 		s1_align_int[i_BS] = -1;
 		//printf("left\n");
     }
+    prev = cell.prevs;
     if(cell.prevs & 1){
         cell=D->cells[D->w*i_BS+j_BS];
-    }
-    if(cell.prevs & 4){
+    }else if(cell.prevs & 2){
     	cell=V->cells[V->w*i_BS+j_BS];
-    }
-    if(cell.prevs & 2){
+    }else if(cell.prevs & 4){
     	cell=H->cells[H->w*i_BS+j_BS];
     }
-    prev = cell.prevs;
   }
 
   //on remplit les séquences à afficher avec une bonne gestion des indel
