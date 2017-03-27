@@ -92,7 +92,6 @@ void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigne
 void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix *H, unsigned int i_BS, unsigned int j_BS, char* s1, char* s2, int* BestScore){
   int *s1_align_int = mallocOrDie(strlen(s1)*sizeof(int), "alloc error for s1 align");
   int *s2_align_int = mallocOrDie(strlen(s2)*sizeof(int), "alloc error for s2 align");
-  uint8_t* prev = mallocOrDie(sizeof(uint8_t), "prev");
   struct cell cell;
   
   //initialisation des tableaux pour les alignements
@@ -104,35 +103,37 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   }
   
   cell=D->cells[D->w*i_BS+j_BS];
-  (*prev)=cell.prevs;
+  uint8_t prev = 1;
   
   //recherche de l'alignement
   while(cell.score > 0) {
-    if ((*prev)&1) {
+    if (prev & 1) {
       i_BS-=1; 
       j_BS-=1;
       s1_align_int[i_BS] = 1;
       s2_align_int[j_BS] = 1;
       //printf("diag\n");
     }
-    else if ((*prev)&2) {
+    else if (prev & 4) {
       j_BS-=1;
       s2_align_int[j_BS] = -1;
       //printf("top\n");
     }
-      else if ((*prev)&4){
+      else if (prev & 2){
 		i_BS-=1;
 		s1_align_int[i_BS] = -1;
 		//printf("left\n");
     }
-    cell=D->cells[D->w*i_BS+j_BS];
-    if(cell.prevs == 0){
+    if(cell.prevs & 1){
+        cell=D->cells[D->w*i_BS+j_BS];
+    }
+    if(cell.prevs & 4){
     	cell=V->cells[V->w*i_BS+j_BS];
     }
-    if(cell.prevs == 0){
+    if(cell.prevs & 2){
     	cell=H->cells[H->w*i_BS+j_BS];
     }
-    (*prev)=cell.prevs;
+    prev = cell.prevs;
   }
 
   //on remplit les séquences à afficher avec une bonne gestion des indel
@@ -140,7 +141,7 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   char* s1_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s1 print");
   char* s2_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s2 print");
 
-  /*
+  
   for(int i = 0; i < strlen(s1); i++){
     printf("%d  ", s1_align_int[i]);
   }
@@ -149,7 +150,7 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
     printf("%d  ", s2_align_int[i]);
   }
   printf("\n");
-  */
+  
 
   int p1 = 0, p2 = 0;
   int reslength = 0;
@@ -201,7 +202,6 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   
   free(s1_align_int);
   free(s2_align_int);
-  free(prev);
   free(s1_print);
   free(s2_print);
 }

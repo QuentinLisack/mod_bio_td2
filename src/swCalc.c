@@ -35,6 +35,17 @@ void swPrintMat(struct matrix *mat) {
   printf("\n");
 }
 
+void swPrintMatPrev(struct matrix *mat) {
+  printf("\n");
+  for (unsigned int i=0; i<mat->h; i++){
+    for (unsigned int j=0; j<mat->w; j++) {
+      printf("%d  ",mat->cells[mat->w*i+j].prevs);
+    } 
+    printf("\n");
+  }
+  printf("\n");
+}
+
 void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
     for(unsigned int i = 1; i < mat->h; i++){
         for(unsigned int j = 1; j< mat->w; j++){

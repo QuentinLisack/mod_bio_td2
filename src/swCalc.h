@@ -50,6 +50,7 @@ void swFreeMat(struct matrix *mat);
 
 /* print contents of matrix, for debugging */
 void swPrintMat(struct matrix *mat);
+void swPrintMatPrev(struct matrix *mat);
 
 double max(double a, double b, double c, int dir);
 
