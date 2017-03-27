@@ -24,7 +24,8 @@ int main(void)
 	struct matrix *H = swInitMat(s1,s2);
 	swFillMatAff(D, V, H, cost, s1, s2);
 
-    /* uncomment for debug
+    //uncomment for debug : 
+    
     printf("\n");
     printf("matrice D : \n");
 	swPrintMat(D);
@@ -35,7 +36,7 @@ int main(void)
 	printf("matrice H : \n");
 	swPrintMat(H);
 	printf("\n");
-	*/
+	
 	
 	printBestAlisAff(D, V, H, cost, s1, s2);
 
