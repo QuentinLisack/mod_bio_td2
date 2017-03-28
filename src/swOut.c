@@ -19,9 +19,9 @@ void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   printf("Best score is %f \n ", *BestScore);
   printf("\n");
   printf("les sequences initiales sont : \n");
-  printf("s1	%s\n",s1);
+  printf("s1  %s\n",s1);
   printf("\n");
-  printf("s2	%s\n",s2);
+  printf("s2  %s\n",s2);
 
   free(BestScore);
   free(i_BS);
@@ -45,9 +45,9 @@ void printBestAlisAff(struct matrix *D, struct matrix *V, struct matrix *H, stru
   printf("Best score is %.1f\n ", *BestScore);
   printf("\n");
   printf("les sequences initiales sont : \n");
-  printf("s1	%s\n",s1);
+  printf("s1  %s\n",s1);
   printf("\n");
-  printf("s2	%s\n",s2);
+  printf("s2  %s\n",s2);
 
   free(BestScore);
   free(i_BS);
@@ -96,20 +96,17 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   
   //initialisation des tableaux pour les alignements
   for(unsigned int p = 0; p < strlen(s1); p++){
-  	s1_align_int[p] = 0;
+    s1_align_int[p] = 0;
   }
   for(unsigned int p = 0; p < strlen(s2); p++){
-  	s2_align_int[p] = 0;
+    s2_align_int[p] = 0;
   }
   
   cell=D->cells[D->w*i_BS+j_BS];
   uint8_t prev = 1;
-  printf("i_BS = %d \n", i_BS);
-  printf("j_BS = %d \n \n", j_BS);
 
   //recherche de l'alignement
   while(cell.score > 0) {
-    printf("prev = %d \n", prev);
     if (prev & 1) {
       //printf("coucou");
       s1_align_int[i_BS-1] = 1;
@@ -127,9 +124,9 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
     if(prev & 1){
       cell=D->cells[D->w*i_BS+j_BS];
     } else if(prev & 4){
-    	cell=V->cells[V->w*i_BS+j_BS];
+      cell=V->cells[V->w*i_BS+j_BS];
     } else if(prev & 2){
-    	cell=H->cells[H->w*i_BS+j_BS];
+      cell=H->cells[H->w*i_BS+j_BS];
     } else {
       break;
     }
@@ -139,18 +136,7 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   int LENGTH = strlen(s1) < strlen(s2) ? strlen(s2) : strlen(s1);
   char* s1_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s1 print");
   char* s2_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s2 print");
-
-  printf("prevs \n");
-  for(int i = 0; i < strlen(s1); i++){
-    printf("%d  ", s1_align_int[i]);
-  }
-  printf("\n");
-  for(int i = 0; i < strlen(s2); i++){
-    printf("%d  ", s2_align_int[i]);
-  }
-  printf("\n");
   
-
   int p1 = 0, p2 = 0;
   int reslength = 0;
   int seqBegin = 0;
@@ -213,10 +199,10 @@ void printCorrespondingSeq(struct matrix *mat, unsigned int i_BS, unsigned int j
   
   //initialisation des tableaux pour les alignements
   for(unsigned int p = 0; p < strlen(s1); p++){
-  	s1_align_int[p] = 0;
+    s1_align_int[p] = 0;
   }
   for(unsigned int p = 0; p < strlen(s2); p++){
-  	s2_align_int[p] = 0;
+    s2_align_int[p] = 0;
   }
   
   cell=mat->cells[mat->w*i_BS+j_BS];
@@ -237,9 +223,9 @@ void printCorrespondingSeq(struct matrix *mat, unsigned int i_BS, unsigned int j
       //printf("top\n");
     }
       else if ((*prev)&4){
-		i_BS-=1;
-		s1_align_int[i_BS] = -1;
-		//printf("left\n");
+    i_BS-=1;
+    s1_align_int[i_BS] = -1;
+    //printf("left\n");
     }
     cell=mat->cells[mat->w*i_BS+j_BS];
     (*prev)=cell.prevs;
@@ -296,8 +282,6 @@ void printCorrespondingSeq(struct matrix *mat, unsigned int i_BS, unsigned int j
     }else if(s2_align_int[p2] == 0){
       p2++;
     }else{
-      printf("PROBLEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEME\n");
-      printf("p1 = %d, p2 = %d, s1 = %d, s2 = %d\n", p1, p2, s1_align_int[p1], s2_align_int[p2]);
     }
   }
   
