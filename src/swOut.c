@@ -104,36 +104,35 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   
   cell=D->cells[D->w*i_BS+j_BS];
   uint8_t prev = 1;
-  
+  printf("i_BS = %d \n", i_BS);
+  printf("j_BS = %d \n \n", j_BS);
+
   //recherche de l'alignement
   while(cell.score > 0) {
+    printf("prev = %d \n", prev);
     if (prev & 1) {
+      //printf("coucou");
+      s1_align_int[i_BS-1] = 1;
+      s2_align_int[j_BS-1] = 1;
       i_BS-=1; 
       j_BS-=1;
-      s1_align_int[i_BS] = 1;
-      s2_align_int[j_BS] = 1;
-      //printf("diag\n");
-    }
-    else if (prev & 4) {
+    } else if (prev & 4) {
+      s1_align_int[i_BS-1] = -1;
+      i_BS-=1;
+    } else if (prev & 2){
+      s2_align_int[j_BS-1] = -1;
       j_BS-=1;
-      s2_align_int[j_BS] = -1;
-      //printf("top\n");
-    }
-      else if (prev & 2){
-		i_BS-=1;
-		s1_align_int[i_BS] = -1;
-		//printf("left\n");
-    }
-    if(cell.prevs & 1){
-        cell=D->cells[D->w*i_BS+j_BS];
-    }
-    if(cell.prevs & 4){
-    	cell=V->cells[V->w*i_BS+j_BS];
-    }
-    if(cell.prevs & 2){
-    	cell=H->cells[H->w*i_BS+j_BS];
     }
     prev = cell.prevs;
+    if(prev & 1){
+      cell=D->cells[D->w*i_BS+j_BS];
+    } else if(prev & 4){
+    	cell=V->cells[V->w*i_BS+j_BS];
+    } else if(prev & 2){
+    	cell=H->cells[H->w*i_BS+j_BS];
+    } else {
+      break;
+    }
   }
 
   //on remplit les séquences à afficher avec une bonne gestion des indel
@@ -141,7 +140,7 @@ void printCorrespondingSeqAff(struct matrix *D, struct matrix *V, struct matrix 
   char* s1_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s1 print");
   char* s2_print = mallocOrDie(LENGTH*sizeof(char), "alloc error for s2 print");
 
-  
+  printf("prevs \n");
   for(int i = 0; i < strlen(s1); i++){
     printf("%d  ", s1_align_int[i]);
   }
