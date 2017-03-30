@@ -37,7 +37,7 @@ int main(void)
 	printf("matrice H : \n");
 	swPrintMat(H);
 	printf("\n");
-	
+	/*
 	printf("\n");
     printf("matrice D : \n");
 	swPrintMatPrev(D);
@@ -48,7 +48,7 @@ int main(void)
 	printf("matrice H : \n");
 	swPrintMatPrev(H);
 	printf("\n");
-	
+	*/
 	
 	printBestAlisAff(D, V, H, cost, s1, s2);
 

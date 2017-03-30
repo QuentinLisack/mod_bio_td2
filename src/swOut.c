@@ -1,7 +1,5 @@
 #include "swOut.h"
 
-//regarder comment avoir accès aux données avec gdb
-// il reste essentiellement à remplir les chaines dans les if et à vérifier les conditions dans les if et while
 void printBestAlis(struct matrix *mat, struct cost *cost, char *s1, char *s2) {
   double* BestScore = mallocOrDie(sizeof(double), "best score");
   *BestScore = 0;
@@ -55,11 +53,11 @@ void printBestAlisAff(struct matrix *D, struct matrix *V, struct matrix *H, stru
 }
 
 void printResults(char* s1_print, char* s2_print, int s1_start, int s2_start){
-  printf("s1 alignment starts at coord %d\n s2 alignment starts at coord %d\n\n", s1_start, s2_start);
+  printf("s1 alignment starts at coord %d\ns2 alignment starts at coord %d\n\n", s1_start, s2_start);
   printf("les sequences alignees sont : \n");
   printf("%s\n", s1_print);
-  printf("\n");
   printf("%s\n", s2_print);
+  printf("\n");
 }
 
 void Calcul_BestScore(struct matrix *mat, double* BS, unsigned int* iBS, unsigned int* jBS, unsigned int *numMax) {
