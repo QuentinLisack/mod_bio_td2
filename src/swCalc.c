@@ -64,18 +64,18 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
 	  }
 	  // diagonale
 	  tempScore = mat->cells[mat->w*(i-1)+(j-1)].score + cost->subst(s1[i-1], s2[j-1]);
-            if(tempScore > mat->cells[mat->w*i+j].score){
-                mat->cells[mat->w*i+j].score = tempScore;
-                mat->cells[mat->w*i+j].prevs |= 1;
-                mat->cells[mat->w*i+j].prevs &= ~2;
-                mat->cells[mat->w*i+j].prevs &= ~4;
-            } else if(tempScore == mat->cells[mat->w*i+j].score){
-                mat->cells[mat->w*i+j].prevs |= 1;
-            }
-            if(mat->cells[mat->w*i+j].score < 0){
-                mat->cells[mat->w*i+j].score = 0;
-                mat->cells[mat->w*i+j].prevs = 0;
-            }
+    if(tempScore > mat->cells[mat->w*i+j].score){
+      mat->cells[mat->w*i+j].score = tempScore;
+      mat->cells[mat->w*i+j].prevs |= 1;
+      mat->cells[mat->w*i+j].prevs &= ~2;
+      mat->cells[mat->w*i+j].prevs &= ~4;
+    } else if(tempScore == mat->cells[mat->w*i+j].score){
+      mat->cells[mat->w*i+j].prevs |= 1;
+    }
+    if(mat->cells[mat->w*i+j].score < 0){
+      mat->cells[mat->w*i+j].score = 0;
+      mat->cells[mat->w*i+j].prevs = 0;
+    }
             //print de debug
             /*
             printf("ligne : %d ; colonne : %d\n", j, i);
@@ -90,8 +90,8 @@ void swFillMat(struct matrix *mat, struct cost *cost, char *s1, char *s2){
             	printf("top avec les char %c %c\n", s1[i-1], s2[j-1]);
             }
             */
-        }
     }
+  }
 }
 
 void swFillMatAff(struct matrix *D, struct matrix *V, struct matrix *H, struct cost *cost, char *s1, char *s2){

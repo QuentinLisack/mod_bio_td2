@@ -19,13 +19,16 @@ int main(void)
 
 	/* BLOSUM62 prot subst cost with affine cost for short indels */
 	struct cost *cost = costProt(-10,-0.5);
-	struct matrix *mat = swInitMat(s1,s2);
-	swFillMat(mat,cost,s1,s2);
-	/* for debugging you can uncomment:
-	   swPrintMat(mat); */
-	printBestAlis(mat,cost,s1,s2);
+	struct matrix *D = swInitMat(s1,s2);
+	struct matrix *V = swInitMat(s1,s2);
+	struct matrix *H = swInitMat(s1,s2);
+	swFillMatAff(D, V, H, cost, s1, s2);
 
-	swFreeMat(mat);
+	printBestAlisAff(D, V, H, cost, s1, s2);
+
+	swFreeMat(D);
+	swFreeMat(V);
+	swFreeMat(H);
 	free(cost);
 	free(s1);
 	free(s2);
